@@ -1,29 +1,29 @@
 # frozen_string_literal: true
 
 RSpec.describe Thorderbolt::RangeBuilder do
-  subject { described_class.range_clause(:col, range) }
+  subject(:result) { described_class.build(:table, :col, range) }
 
-  context 'usual range' do
+  context 'with usual range' do
     let(:range) { (1..8) }
 
     it 'returns correct condition' do
-      expect(subject).to eq("'col' >= 1 AND 'col' <= 8")
+      expect(result).to eq('"table"."col" >= 1 AND "table"."col" <= 8')
     end
   end
 
-  context 'range is reversed' do
+  context 'with reversed range' do
     let(:range) { (8..1) }
 
     it 'sorts range correctly' do
-      expect(subject).to eq("'col' >= 1 AND 'col' <= 8")
+      expect(result).to eq('"table"."col" >= 1 AND "table"."col" <= 8')
     end
   end
 
-  context 'range is exclusive' do
+  context 'with exclusive range' do
     let(:range) { (1...8) }
 
     it 'makes closing condition strict' do
-      expect(subject).to eq("'col' >= 1 AND 'col' < 8")
+      expect(result).to eq('"table"."col" >= 1 AND "table"."col" < 8')
     end
   end
 end

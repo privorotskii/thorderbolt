@@ -5,3 +5,14 @@ AllCops:
     - 'vendor/**/*'
     - 'gemfiles/*'
   TargetRubyVersion: 2.6.3
+
+Rspec/FilePath:
+  Enabled: false
+
+Rspec/LetSetup:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
+    - 'thorderbolt.gemspec'
