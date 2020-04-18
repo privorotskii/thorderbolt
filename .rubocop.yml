@@ -1,0 +1,7 @@
+require: rubocop-rspec
+
+AllCops:
+  Exclude:
+    - 'vendor/**/*'
+    - 'gemfiles/*'
+  TargetRubyVersion: 2.6.3
