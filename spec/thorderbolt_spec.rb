@@ -109,12 +109,13 @@ RSpec.describe Thorderbolt do
     let!(:resources) { create_list(:city, 2).shuffle }
     let!(:extra_resources) { create_list(:city, 2, :extra) }
 
-    let(:resources_ids) { resources.map(&:id) }
+    let(:resources_ids) { resources.sort.map(&:id) }
+    let(:extra_resources_ids) { extra_resources.sort.map(&:id) }
     let(:resources_field_values) { resources.map(&:name) }
 
     it 'sorts correctly' do
       expect(ordered_as_any.map(&:id))
-        .to eq([*resources_ids, *extra_resources.sort.map(&:id)])
+        .to eq([*resources_ids, *extra_resources_ids])
     end
   end
 end
