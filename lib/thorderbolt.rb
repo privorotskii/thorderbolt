@@ -10,15 +10,10 @@ require 'thorderbolt/query_builder'
 module Thorderbolt
   def order_as(hash)
     params = ParamsExtractor.call(hash, table_name)
+    values = params[:values]
 
-    # TODO: returning 'all' here means user will get an array
-    # bun in other case, if params will be present, user will get a relation
-    # return self ?
     return all if params[:values].empty?
-
-    if params[:values].any?(&:nil?)
-      raise ThorderboltError, 'Cannot order by `nil`'
-    end
+    raise ThorderboltError, 'Cannot order by `nil`' if values.any?(&:nil?)
 
     builder = QueryBuilder.new(params)
     order(Arel.sql(builder.build))

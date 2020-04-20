@@ -21,6 +21,17 @@ RSpec.describe Thorderbolt do
       it_behaves_like 'sorts correctly'
     end
 
+    context 'with empty arguments passed' do
+      subject(:ordered) { City.order_as(name: []) }
+
+      let!(:resources) { create_list(:city, 4).shuffle }
+      let!(:extra_resource) { create(:city, :extra) }
+
+      let(:resources_ids) { resources.map(&:id).sort }
+
+      it_behaves_like 'sorts correctly'
+    end
+
     context 'with order by joined table' do
       subject(:ordered) do
         User
