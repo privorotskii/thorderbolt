@@ -6,13 +6,34 @@ AllCops:
     - 'gemfiles/*'
   TargetRubyVersion: 2.6.3
 
-Rspec/FilePath:
+RSpec/FilePath:
   Enabled: false
 
-Rspec/LetSetup:
+RSpec/LetSetup:
   Enabled: false
 
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
     - 'thorderbolt.gemspec'
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
+
+Style/ExponentialNotation:
+  Enabled: true
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true

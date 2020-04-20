@@ -3,13 +3,15 @@
 require 'bundler/setup'
 require 'thorderbolt'
 require 'active_record'
+require 'factory_bot'
 require 'pry-byebug'
 
 ActiveRecord::Base.establish_connection adapter: 'sqlite3', database: ':memory:'
 
 current_dirname = File.dirname(__FILE__)
-load "#{current_dirname}/dummy/db/schema.rb"
-Dir.glob("#{current_dirname}/dummy/models/*.rb").sort.each { |r| require r }
+%w[dummy initializers shared_examples].each do |dir_name|
+  Dir.glob("#{current_dirname}/#{dir_name}/**/*.rb").sort.each { |f| require f }
+end
 
 RSpec.configure do |config|
   config.example_status_persistence_file_path = '.rspec_status'

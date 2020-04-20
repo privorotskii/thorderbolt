@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activerecord'
 
   spec.add_development_dependency 'bundler'
+  spec.add_development_dependency 'factory_bot'
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'pry-byebug'
   spec.add_development_dependency 'rspec', '~> 3.0'
