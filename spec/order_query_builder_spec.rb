@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Thorderbolt::QueryBuilder do
+RSpec.describe Thorderbolt::OrderQueryBuilder do
   let(:instance) { described_class.new(params) }
   let(:params) do
     {

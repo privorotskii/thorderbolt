@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 RSpec.describe Thorderbolt do
+  after { [Post, User, City].each(&:delete_all) }
+
   it 'has a version number' do
     expect(Thorderbolt::VERSION).not_to be nil
   end
 
   describe '.order_as' do
-    after { [Post, User, City].each(&:delete_all) }
-
     let(:resources_ids) { resources.map(&:id) }
 
     context 'with no table name specified' do
@@ -101,7 +101,20 @@ RSpec.describe Thorderbolt do
         expect { ordered }.to raise_error(Thorderbolt::ThorderboltError)
       end
     end
+  end
 
-    # TODO: add possibility to order_as, but equally between sort params
+  describe '.order_as_any' do
+    subject(:ordered_as_any) { City.order_as_any(name: resources_field_values) }
+
+    let!(:resources) { create_list(:city, 2).shuffle }
+    let!(:extra_resources) { create_list(:city, 2, :extra) }
+
+    let(:resources_ids) { resources.map(&:id) }
+    let(:resources_field_values) { resources.map(&:name) }
+
+    it 'sorts correctly' do
+      expect(ordered_as_any.map(&:id))
+        .to eq([*resources_ids, *extra_resources.sort.map(&:id)])
+    end
   end
 end
