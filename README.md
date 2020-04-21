@@ -1,5 +1,38 @@
 # Thorderbolt
 
+`Thorderbolt` adds the ability to order `ActiveRecord` relation in an arbitrary order without having to store anything extra in the database.
+
+It's as easy as:
+
+```ruby
+class User < ActiveRecord::Base
+  extend Thorderbolt
+end
+
+User.order_as(name: ['John', 'Tom'])
+=> #<ActiveRecord::Relation [
+     #<User id: 3, name: 'John'>,
+     #<User id: 1, name: 'Tom'>,
+     #<User id: 2, name: 'Alex'>,
+     #<User id: 4, name: 'Mike'>
+   #]>
+```
+
+Order each specified field as equally is also supported.
+In that case usual order will be applied for all satisfying condition records:
+
+```ruby
+User.order_as_any(name: ['John', 'Tom'])
+=> #<ActiveRecord::Relation [
+     #<User id: 1, name: 'Tom'>,
+     #<User id: 3, name: 'John'>,
+     #<User id: 2, name: 'Alex'>,
+     #<User id: 4, name: 'Mike'>
+   #]>
+```
+
+Using `thorderbolt` doesn't require any additional tables in DB.
+Heavily inspired by [order_as_specified](https://github.com/panorama-ed/order_as_specified), but strongly refactored and some new features were added here.
 
 ## Installation
 
@@ -11,7 +44,7 @@ gem 'thorderbolt'
 
 And then execute:
 
-    $ bundle install
+    $ bundle
 
 Or install it yourself as:
 
@@ -19,23 +52,123 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Actually, each example below is true for `order_as` and `order_as_any` methods. The difference is that `order_as` fixes ordering between specified records, when `order_as_any` just puts specified records at the top and don't set ordering between them at all.
 
-## Development
+Basic usage is simple:
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```ruby
+class User < ActiveRecord::Base
+  extend Thorderbolt
+end
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+User.order_as(name: ['John', 'Tom'])
+=> #<ActiveRecord::Relation [
+     #<User id: 3, name: 'John'>,
+     #<User id: 1, name: 'Tom'>,
+     #<User id: 2, name: 'Alex'>,
+     #<User id: 4, name: 'Mike'>
+   #]>
+```
+
+This returns all `Users`s in the given name order. Note that this
+ordering is not possible with a simple `ORDER BY`. Magic!
+
+Like any other `ActiveRecord` relation, it can be chained:
+
+```ruby
+User
+  .where(name: ['John', 'Tom', 'Mike']).
+  .order_as(name: ['John', 'Tom'])
+  .limit(3)
+=> #<ActiveRecord::Relation [
+     #<User id: 3, name: 'John'>,
+     #<User id: 1, name: 'Tom'>,
+     #<User id: 4, name: 'Mike'>
+   ]>
+```
+
+We can use chaining in this way to order by multiple attributes as well:
+
+```ruby
+User.
+  order_as(name: ['John', 'Mike']).
+  order_as(id: [4, 3, 5]).
+  order(:updated_at)
+=> #<ActiveRecord::Relation [
+
+  # First is name 'John'...
+     #<User id: 1, name: 'John', updated_at: '2020-08-01 02:22:00'>,
+
+  # Within the name, we order by :updated_at...
+     #<User id: 2, name: 'John', updated_at: '2020-08-01 07:29:07'>,
+
+  # Then name 'Mike'...
+     #<User id: 9, name: 'Mike', updated_at: '2020-08-03 04:11:26'>,
+
+    # Within the name, we order by :updated_at...
+     #<User id: 8, name: 'Mike', updated_at: '2020-08-04 18:52:14'>,
+
+  # Then id 4...
+     #<User id: 4, name: 'Alex', updated_at: '2020-08-01 12:59:33'>,
+
+  # Then id 3...
+     #<User id: 3, name: 'Tom', updated_at: '2020-08-02 19:41:44'>,
+
+  # Then id 5...
+     #<User id: 5, name: 'Tom', updated_at: '2020-08-02 22:12:52'>,
+
+  # Then we order by :updated_at...
+     #<User id: 7, name: 'Alex', updated_at: '2020-08-02 14:27:16'>,
+     #<User id: 6, name: 'Tom', updated_at: '2020-08-03 14:26:06'>,
+   ]>
+```
+
+We can also use this when we want to sort by an attribute in another model:
+
+```ruby
+User
+  .joins(:city)
+  .order_as(cities: { id: [first_city.id, second_city.id, third_city.id] })
+```
+
+In all cases, results with attribute values not in the given list will be
+sorted as though the attribute is `NULL` in a typical `ORDER BY`:
+
+```ruby
+User.order_as(name: ['Tom', 'John'])
+=> #<ActiveRecord::Relation [
+     #<User id: 2, name: 'Tom'>,
+     #<User id: 3, name: 'John'>,
+     #<User id: 1, name: 'Mike'>,
+     #<User id: 4, name: 'Mike'>
+   ]>
+```
+
+Note that if a `nil` value is passed in the ordering an error is raised, because
+databases do not have good or consistent support for ordering with `NULL` values
+in an arbitrary order, so this behavior isn't permitted.
+
+## Limitations
+
+Databases may have limitations on the underlying number of fields you can have
+in an `ORDER BY` clause. For example, in PostgreSQL if you pass in more than
+1664 list elements you'll receive such error:
+
+```ruby
+PG::ProgramLimitExceeded: ERROR: target lists can have at most 1664 entries
+```
+That's a database limitation that this gem cannot avoid, unfortunately.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/TolichP/thorderbolt. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/TolichP/thorderbolt/blob/master/CODE_OF_CONDUCT.md).
+1. Fork it (https://github.com/TolichP/thorderbolt/fork)
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request
 
+Please, make sure your changes have appropriate tests (`bundle exec rspec`) and conform to the Rubocop style specified.
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Code of Conduct
-
-Everyone interacting in the Thorderbolt project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/TolichP/thorderbolt/blob/master/CODE_OF_CONDUCT.md).
+`Thorderbolt` is released under the [MIT License](https://github.com/TolichP/thorderbolt/blob/master/LICENSE.txt).
