@@ -1,11 +1,20 @@
-require "bundler/setup"
-require "thorderbolt"
+# frozen_string_literal: true
+
+require 'bundler/setup'
+require 'thorderbolt'
+require 'active_record'
+require 'factory_bot'
+require 'pry-byebug'
+
+ActiveRecord::Base.establish_connection adapter: 'sqlite3', database: ':memory:'
+
+current_dirname = File.dirname(__FILE__)
+%w[dummy initializers shared_examples].each do |dir_name|
+  Dir.glob("#{current_dirname}/#{dir_name}/**/*.rb").sort.each { |f| require f }
+end
 
 RSpec.configure do |config|
-  # Enable flags like --only-failures and --next-failure
-  config.example_status_persistence_file_path = ".rspec_status"
-
-  # Disable RSpec exposing methods globally on `Module` and `main`
+  config.example_status_persistence_file_path = '.rspec_status'
   config.disable_monkey_patching!
 
   config.expect_with :rspec do |c|
