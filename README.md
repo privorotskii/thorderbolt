@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/TolichP/thorderbolt.svg?branch=master)](https://travis-ci.org/TolichP/thorderbolt)
+
 # Thorderbolt
 
 `Thorderbolt` adds the ability to order `ActiveRecord` relation in an arbitrary order without having to store anything extra in the database.
