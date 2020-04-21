@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
+require 'simplecov'
 require 'thorderbolt'
 require 'active_record'
 require 'factory_bot'
 require 'pry-byebug'
+
+SimpleCov.start
 
 ActiveRecord::Base.establish_connection adapter: 'sqlite3', database: ':memory:'
 

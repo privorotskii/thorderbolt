@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/TolichP/thorderbolt.svg?branch=master)](https://travis-ci.org/TolichP/thorderbolt)
+[![Build Status](https://travis-ci.org/TolichP/thorderbolt.svg?branch=master)](https://travis-ci.org/TolichP/thorderbolt) [![Test Coverage](https://api.codeclimate.com/v1/badges/2a3289492309d6f7740c/test_coverage)](https://codeclimate.com/github/TolichP/thorderbolt/test_coverage) [![Gem Version](https://badge.fury.io/rb/thorderbolt.svg)](https://badge.fury.io/rb/thorderbolt)
 
 # Thorderbolt
 
