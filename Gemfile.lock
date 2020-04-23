@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     thorderbolt (0.1.0)
-      activerecord (>= 5.0.0)
+      activerecord (>= 5.0)
 
 GEM
   remote: https://rubygems.org/
@@ -72,7 +72,7 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
-    sqlite3 (1.3.13)
+    sqlite3 (1.4.2)
     thread_safe (0.3.6)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
@@ -83,15 +83,15 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler
-  factory_bot
-  pry
-  pry-byebug
+  bundler (~> 2.0)
+  factory_bot (~> 5.0)
+  pry (>= 0.12)
+  pry-byebug (~> 3.0)
   rspec (~> 3.0)
   rubocop (~> 0.76)
-  rubocop-rspec
+  rubocop-rspec (~> 1.0)
   simplecov (= 0.17.0)
-  sqlite3
+  sqlite3 (~> 1.4.0)
   thorderbolt!
 
 BUNDLED WITH
