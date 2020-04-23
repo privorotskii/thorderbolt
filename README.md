@@ -20,8 +20,8 @@ User.order_as(name: ['John', 'Tom'])
    #]>
 ```
 
-Order each specified field as equally is also supported.
-In that case usual order will be applied for all satisfying condition records:
+Ordering of each specified field as equal is also supported.
+In that case usual order will be applied for all the satisfying condition records:
 
 ```ruby
 User.order_as_any(name: ['John', 'Tom'])
@@ -34,11 +34,12 @@ User.order_as_any(name: ['John', 'Tom'])
 ```
 
 Using `thorderbolt` doesn't require any additional tables in DB.
-Heavily inspired by [order_as_specified](https://github.com/panorama-ed/order_as_specified), but strongly refactored and some new features were added here.
+
+This gem is heavily inspired by [order_as_specified](https://github.com/panorama-ed/order_as_specified), but strongly refactored with addition of some extra features.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application Gemfile:
 
 ```ruby
 gem 'thorderbolt'
@@ -54,7 +55,7 @@ Or install it yourself as:
 
 ## Usage
 
-Actually, each example below is true for `order_as` and `order_as_any` methods. The difference is that `order_as` fixes ordering between specified records, when `order_as_any` just puts specified records at the top and don't set ordering between them at all.
+actually, each example below is true for `order_as` and `order_as_any` methods. The difference is that `order_as` fixes ordering between specified records, when `order_as_any` just puts specified records at the top and don't change ordering between them at all.
 
 Basic usage is simple:
 
@@ -72,7 +73,7 @@ User.order_as(name: ['John', 'Tom'])
    #]>
 ```
 
-This returns all `Users`s in the given name order. Note that this
+This returns all `Users` ordered by the given names. Note that this
 ordering is not possible with a simple `ORDER BY`. Magic!
 
 Like any other `ActiveRecord` relation, it can be chained:
@@ -133,8 +134,8 @@ User
   .order_as(cities: { id: [first_city.id, second_city.id, third_city.id] })
 ```
 
-In all cases, results with attribute values not in the given list will be
-sorted as though the attribute is `NULL` in a typical `ORDER BY`:
+In all the cases, results with attribute values which aren't in tghe given list will be
+sorted as if the attribute is `NULL` in a typical `ORDER BY`:
 
 ```ruby
 User.order_as(name: ['Tom', 'John'])
@@ -146,7 +147,7 @@ User.order_as(name: ['Tom', 'John'])
    ]>
 ```
 
-Note that if a `nil` value is passed in the ordering an error is raised, because
+Note that an error is raised if a `nil` value was passed in the ordering params, because
 databases do not have good or consistent support for ordering with `NULL` values
 in an arbitrary order, so this behavior isn't permitted.
 
