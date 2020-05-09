@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/TolichP/thorderbolt.svg?branch=master)](https://travis-ci.org/TolichP/thorderbolt) [![Test Coverage](https://api.codeclimate.com/v1/badges/2a3289492309d6f7740c/test_coverage)](https://codeclimate.com/github/TolichP/thorderbolt/test_coverage) [![Gem Version](https://badge.fury.io/rb/thorderbolt.svg)](https://badge.fury.io/rb/thorderbolt)
+[![Build Status](https://travis-ci.org/privorotskii/thorderbolt.svg?branch=master)](https://travis-ci.org/privorotskii/thorderbolt) [![Test Coverage](https://api.codeclimate.com/v1/badges/2a3289492309d6f7740c/test_coverage)](https://codeclimate.com/github/privorotskii/thorderbolt/test_coverage) [![Gem Version](https://badge.fury.io/rb/thorderbolt.svg)](https://badge.fury.io/rb/thorderbolt)
 
 # Thorderbolt
 
@@ -164,7 +164,7 @@ That's a database limitation that this gem cannot avoid, unfortunately.
 
 ## Contributing
 
-1. Fork it (https://github.com/TolichP/thorderbolt/fork)
+1. Fork it (https://github.com/privorotskii/thorderbolt/fork)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -174,4 +174,4 @@ Please, make sure your changes have appropriate tests (`bundle exec rspec`) and 
 
 ## License
 
-`Thorderbolt` is released under the [MIT License](https://github.com/TolichP/thorderbolt/blob/master/LICENSE.txt).
+`Thorderbolt` is released under the [MIT License](https://github.com/privorotskii/thorderbolt/blob/master/LICENSE.txt).

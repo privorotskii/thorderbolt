@@ -6,16 +6,16 @@ Gem::Specification.new do |spec|
   spec.name          = 'thorderbolt'
   spec.version       = Thorderbolt::VERSION
   spec.authors       = ['Alexandr Privorotskiy']
-  spec.email         = ['aleksandr.privorotskiy@gmail.com']
+  spec.email         = ['privorotskii@gmail.com']
 
   spec.summary       = 'Active record arbitrary ordering'
-  spec.homepage      = 'https://github.com/TolichP/thorderbolt'
+  spec.homepage      = 'https://github.com/privorotskii/thorderbolt'
   spec.license       = 'MIT'
   spec.required_ruby_version = Gem::Requirement.new('>= 2.3.0')
 
   spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = 'https://github.com/TolichP/thorderbolt'
-  spec.metadata['changelog_uri'] = %(https://github.com/TolichP/thorderbolt/blob/master/CHANGELOG.md)
+  spec.metadata['source_code_uri'] = 'https://github.com/privorotskii/thorderbolt'
+  spec.metadata['changelog_uri'] = %(https://github.com/privorotskii/thorderbolt/blob/master/CHANGELOG.md)
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject do |f|
